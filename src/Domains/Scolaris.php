@@ -4,10 +4,11 @@ namespace HermesSdk\Domains;
 
 use HermesSdk\HttpApiClient;
 use HermesSdk\Models\Email;
+use HermesSdk\Models\Scolaris\Tenant;
 
-class Admin
+class Scolaris
 {
-    private const SERVICE = 'admin';
+    private const SERVICE = 'scolaris';
 
     public function __construct(
         private HttpApiClient $httpApiClient
@@ -16,21 +17,23 @@ class Admin
     /**
      * @return Email
      */
-    public function sendWelcomeUserMail(string $email, string $userName, string $password, bool $changePasswordAtNextLogin = false): Email
+    public function sendWelcomeUserMail(string $email, string $userName, Tenant $tenant): Email
     {
         $email = $this->httpApiClient->post('emails', [
             'service' => self::SERVICE,
-            'key' => 'user_welcome',
+            'email_id' => 'user_welcome',
             'destination' => $email,
             'params' => [
                 'user_name' => $userName,
+                'tenant_name' => $tenant->getName(),
+                'tenant_subdomain' => $tenant->getSubdomain(),
             ],
         ]);
 
         return new Email(
             $email['id'],
             $email['service'],
-            $email['key'],
+            $email['email_id'],
             $email['destination'],
             $email['params'],
             $email['status'],

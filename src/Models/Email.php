@@ -1,6 +1,6 @@
 <?php
 
-namespace HermesSdk;
+namespace HermesSdk\Models;
 
 class Email
 {
@@ -9,11 +9,11 @@ class Email
 
     public function __construct(
         private string $id,
-        private Service $service,
-        private string $key,
+        private string $service,
+        private string $emailId,
         private string $destination,
         private array $params = [],
-        private Status $status,
+        private string $status,
         private string $createdAt,
         private string $sentAt = '',
         private string $error = '',
@@ -25,14 +25,14 @@ class Email
         return $this->id;
     }
 
-    public function getService(): Service
+    public function getService(): string
     {
         return $this->service;
     }
 
-    public function getKey(): string
+    public function getEmailId(): string
     {
-        return $this->key;
+        return $this->emailId;
     }
 
     public function getDestination(): string
@@ -45,7 +45,7 @@ class Email
         return $this->params;
     }
 
-    public function getStatus(): Status
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -79,11 +79,11 @@ class Email
     {
         return [
             'id' => $this->id,
-            'service' => $this->service->value,
-            'key' => $this->key,
+            'service' => $this->service,
+            'email_id' => $this->emailId,
             'destination' => $this->destination,
             'params' => $this->params,
-            'status' => $this->status->value,
+            'status' => $this->status,
             'created_at' => $this->createdAt,
             'error' => $this->error,
             'error_trace' => $this->errorTrace,

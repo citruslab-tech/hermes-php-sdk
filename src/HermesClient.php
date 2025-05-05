@@ -3,6 +3,7 @@
 namespace HermesSdk;
 
 use HermesSdk\Domains\Admin;
+use HermesSdk\Domains\Scolaris;
 
 class HermesClient
 {
@@ -20,5 +21,10 @@ class HermesClient
     public function admin(): Admin
     {
         return new Admin($this->httpApiClient);
+    }
+
+    public function scolaris(): Scolaris
+    {
+        return new Scolaris($this->httpApiClient);
     }
 }

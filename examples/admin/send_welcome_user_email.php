@@ -2,8 +2,9 @@
 require 'vendor/autoload.php';
 
 use HermesSdk\HttpApiClient;
+use HermesSdk\Models\Scolaris\Tenant;
 
-$hubApiUrl = 'http://localhost:8104';
+$hubApiUrl = 'http://localhost:8103';
 
 $hubApiClient = new HttpApiClient();
 $hubApiClient->setBaseUrl($hubApiUrl);
@@ -15,7 +16,7 @@ $hubClient = new HermesSdk\HermesClient($apiKey, $hubApiUrl);
 
 $destination = 'demo@email.com';
 $userName = 'Demo User';
-$tempPassword = 'tmp';
-$email = $hubClient->admin()->sendWelcomeUserMail($destination, $userName, $tempPassword);
+$tenant = new Tenant('Demo Tenant', 'demo-tenant');
+$email = $hubClient->scolaris()->sendWelcomeUserMail($destination, $userName, $tenant);
 
 print_r($email->toArray());
