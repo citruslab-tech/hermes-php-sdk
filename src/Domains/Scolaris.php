@@ -17,30 +17,40 @@ class Scolaris
     /**
      * @return Email
      */
-    public function sendWelcomeUserMail(string $email, string $userName, Tenant $tenant): Email
+    public function sendWelcomeUserMail(string $email, string $userName, string $token, int $otpExpirationMinutes, Tenant $tenant): Email
     {
         $email = $this->httpApiClient->post('emails', [
             'service' => self::SERVICE,
             'email_id' => 'user_welcome',
             'destination' => $email,
             'params' => [
-                'user_name' => $userName,
                 'tenant_name' => $tenant->getName(),
                 'tenant_subdomain' => $tenant->getSubdomain(),
+                'user_name' => $userName,
+                'user_token' => $token,
+                'user_token_expiration_minutes' => $otpExpirationMinutes,
             ],
         ]);
 
-        return new Email(
-            $email['id'],
-            $email['service'],
-            $email['email_id'],
-            $email['destination'],
-            $email['params'],
-            $email['status'],
-            $email['created_at'],
-            $email['sent_at'] ?? '',
-            $email['error'] ?? '',
-            $email['error_trace'] ?? '',
-        );
+        return Email::fromArray($email);
+    }
+
+    public function sendUserOtp(string $email, string $userName, string $otp, string $otpAction, int $otpExpirationMinutes, Tenant $tenant): Email
+    {
+        $email = $this->httpApiClient->post('emails', [
+            'service' => self::SERVICE,
+            'email_id' => 'user_otp',
+            'destination' => $email,
+            'params' => [
+                'tenant_name' => $tenant->getName(),
+                'tenant_subdomain' => $tenant->getSubdomain(),
+                'user_name' => $userName,
+                'otp_code' => $otp,
+                'otp_action' => $otpAction,
+                'otp_expiration_minutes' => $otpExpirationMinutes,
+            ],
+        ]);
+
+        return Email::fromArray($email);
     }
 }

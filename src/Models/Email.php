@@ -90,4 +90,26 @@ class Email
             'retries' => array_map(fn($email) => $email->toArray(), $this->retries),
         ];
     }
+
+    public static function fromArray(array $data): self
+    {
+        $email = new self(
+            $data['id'],
+            $data['service'],
+            $data['email_id'],
+            $data['destination'],
+            $data['params'] ?? [],
+            $data['status'],
+            $data['created_at'],
+            $data['sent_at'] ?? '',
+            $data['error'] ?? '',
+            $data['error_trace'] ?? '',
+        );
+
+        foreach ($data['retries'] ?? [] as $retry) {
+            $email->addRetry(self::fromArray($retry));
+        }
+
+        return $email;
+    }
 }
