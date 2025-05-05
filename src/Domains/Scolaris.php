@@ -17,19 +17,18 @@ class Scolaris
     /**
      * @return Email
      */
-    public function sendWelcomeUserMail(string $email, string $userName, string $token, int $otpExpirationMinutes, Tenant $tenant): Email
+    public function sendEmail(string $emailId, string $destination, string $params, Tenant $tenant): Email
     {
+        $paramsWithTenant = array_merge($params, [
+            'tenant_name' => $tenant->getName(),
+            'tenant_subdomain' => $tenant->getSubdomain(),
+        ]);
+
         $email = $this->httpApiClient->post('emails', [
             'service' => self::SERVICE,
-            'email_id' => 'user_welcome',
-            'destination' => $email,
-            'params' => [
-                'tenant_name' => $tenant->getName(),
-                'tenant_subdomain' => $tenant->getSubdomain(),
-                'user_name' => $userName,
-                'user_token' => $token,
-                'user_token_expiration_minutes' => $otpExpirationMinutes,
-            ],
+            'email_id' => $emailId,
+            'destination' => $destination,
+            'params' => $paramsWithTenant,
         ]);
 
         return Email::fromArray($email);
