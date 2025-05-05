@@ -17,7 +17,7 @@ class Scolaris
     /**
      * @return Email
      */
-    public function sendEmail(string $emailId, string $destination, string $params, Tenant $tenant): Email
+    public function sendEmail(string $emailId, string $destination, array $params, Tenant $tenant): Email
     {
         $paramsWithTenant = array_merge($params, [
             'tenant_name' => $tenant->getName(),
