@@ -4,7 +4,7 @@ namespace HermesSdk\Domains;
 
 use HermesSdk\HttpApiClient;
 use HermesSdk\Models\Email;
-use HermesSdk\Models\Scolaris\Tenant;
+use HermesSdk\Models\Atendia\Tenant;
 
 class Atendia
 {
