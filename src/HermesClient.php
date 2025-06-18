@@ -3,6 +3,7 @@
 namespace HermesSdk;
 
 use HermesSdk\Domains\Admin;
+use HermesSdk\Domains\Atendia;
 use HermesSdk\Domains\Scolaris;
 
 class HermesClient
@@ -26,5 +27,10 @@ class HermesClient
     public function scolaris(): Scolaris
     {
         return new Scolaris($this->httpApiClient);
+    }
+
+    public function atendia(): Atendia
+    {
+        return new Atendia($this->httpApiClient);
     }
 }
